@@ -1,0 +1,22 @@
+# 가상환경
+.venv/
+
+# 환경변수 (API 키 노출 방지)
+.env
+
+# 추출 이미지 (용량 폭증 방지)
+data/figures/
+*.pdf
+
+# 벡터 DB
+chroma_db/
+
+# 파이썬
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# 에디터
+.vscode/
+.idea/
+.DS_Store
