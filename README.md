@@ -19,14 +19,14 @@
 
 ```mermaid
 flowchart LR
-    subgraph S1["① 추출 (extract.ipynb)"]
+    subgraph S1["① 추출 (extract.py)"]
         PDF[duolingo_q3_2025.pdf] --> U["unstructured<br/>hi_res + by_title"]
         U --> T[텍스트 청크]
         U --> TB[표]
         U --> IMG["이미지<br/>data/figures_assignment/"]
     end
 
-    subgraph S2["② 요약·색인 (summarize.ipynb → retriever.ipynb)"]
+    subgraph S2["② 요약·색인 (summarize.py → retriever.py)"]
         T --> SUM[gpt-4o-mini 요약]
         TB --> SUM
         IMG --> SUM
@@ -37,7 +37,7 @@ flowchart LR
         VS -. doc_id로 연결 .- DS
     end
 
-    subgraph S3["③ 검색·생성 (retriever.ipynb)"]
+    subgraph S3["③ 검색·생성 (retriever.py)"]
         Q[질문] --> VS
         VS -->|doc_id| DS
         DS -->|"표 원문 + 이미지"| LLM["gpt-4o-mini<br/>멀티모달"]
@@ -78,7 +78,7 @@ flowchart LR
 
 ## 5. 결과
 
-### 질의 5건 (`src/retriever.ipynb` 7-2)
+### 질의 5건 (`python src/retriever.py`)
 
 모두 표나 그래프에만 있는 수치를 묻는 질문입니다. 답은 원본 PDF의 표 값과 대조해 확인했습니다.
 
@@ -94,7 +94,7 @@ flowchart LR
 
 같은 질문, 같은 모델, 같은 프롬프트를 쓰고 **검색 대상만 다르게** 한 비교입니다.
 
-![Before/After 비교 — retriever.ipynb 8-2 셀 출력](docs/before_after.png)
+![Before/After 비교 — retriever.py 실행 출력](docs/before_after.png)
 
 ```text
 ============================================================
@@ -150,9 +150,9 @@ multimodal-rag/
 │   ├── 03_임베딩_최종체인_연습.ipynb
 │   └── multi_modal_RAG.ipynb
 └── src/                    # 과제
-    ├── extract.ipynb       # ① PDF 파싱
-    ├── summarize.ipynb     # ② 요약 생성
-    └── retriever.ipynb     # ②③ 다중 벡터 검색기 + 최종 체인
+    ├── extract.py          # ① PDF 파싱
+    ├── summarize.py        # ② 요약 생성
+    └── retriever.py        # ②③ 다중 벡터 검색기 + 최종 체인
 ```
 
 ## 9. 실행 방법
@@ -176,4 +176,10 @@ python -m ipykernel install --user --name multimodal-rag
 cp .env.example .env             # 윈도우: copy .env.example .env
 ```
 
-이후 `src/extract.ipynb` → `src/summarize.ipynb` → `src/retriever.ipynb` 순서로 실행합니다.
+이후 프로젝트 루트에서 순서대로 실행합니다.
+
+```bash
+python src/extract.py     # ① PDF → 텍스트·표·이미지 (약 1분)
+python src/summarize.py   # ② 요약 생성
+python src/retriever.py   # ③ 색인 → 질의 5건 → Before/After 출력
+```
