@@ -10,6 +10,7 @@ data/processed/
 data/figures_assignment/
 data/processed_assignment/
 notebooks/processed/
+notebooks/figures
 
 # 벡터 DB
 chroma_db/
